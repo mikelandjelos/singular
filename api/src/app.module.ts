@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -14,9 +15,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         url: cfg.get<string>('DATABASE_URL'),
         autoLoadEntities: true,
         synchronize: true, // TODO: use `false` (run migs manually)
-        dropSchema: true, // TODO: use `false` - `true` only during initial local dev
+        dropSchema: true, // TODO: delete this - `true` only during initial dev phase
       }),
     }),
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
