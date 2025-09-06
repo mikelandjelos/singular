@@ -11,7 +11,7 @@ import {
 export class User {
   @PrimaryGeneratedColumn('uuid') id: string;
 
-  // auth
+  // local auth
   @Column({ unique: true }) email: string;
   @Column() passwordHash: string;
 

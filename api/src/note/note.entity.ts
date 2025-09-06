@@ -11,13 +11,13 @@ import {
   Index,
   JoinColumn,
 } from 'typeorm';
-import { User } from '../users/user.entity';
-import { Project } from '../projects/project.entity';
-import { Tag } from '../tags/tag.entity';
+import { User } from '../user/user.entity';
+import { Project } from '../project/project.entity';
+import { Tag } from '../tag/tag.entity';
 
-@Entity('postcard')
-@Index('idx_postcard_user_date', ['userId', 'workDate'])
-export class Postcard {
+@Entity('note')
+@Index('idx_note_user_date', ['userId', 'workDate'])
+export class Note {
   @PrimaryGeneratedColumn('uuid') id: string;
 
   @Column() userId: string;
@@ -35,8 +35,8 @@ export class Postcard {
 
   @ManyToMany(() => Tag, { cascade: false })
   @JoinTable({
-    name: 'postcard_tag',
-    joinColumn: { name: 'postcard_id', referencedColumnName: 'id' },
+    name: 'note_tag',
+    joinColumn: { name: 'note_id', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'tag_id', referencedColumnName: 'id' },
   })
   tags: Tag[];

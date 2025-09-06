@@ -1,9 +1,13 @@
+import { UserModule } from './user/user.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthModule } from './health/health.module';
+import { ProjectModule } from './project/project.module';
+import { TagModule } from './tag/tag.module';
+import { NoteModule } from './note/note.module';
 
 @Module({
   imports: [
@@ -19,6 +23,10 @@ import { HealthModule } from './health/health.module';
       }),
     }),
     HealthModule,
+    UserModule,
+    ProjectModule,
+    TagModule,
+    NoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],
