@@ -1,13 +1,13 @@
 import { UserModule } from './user/user.module';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthModule } from './health/health.module';
-import { ProjectModule } from './project/project.module';
-import { TagModule } from './tag/tag.module';
-import { NoteModule } from './note/note.module';
+// import { ProjectModule } from './project/project.module';
+// import { TagModule } from './tag/tag.module';
+// import { NoteModule } from './note/note.module';
+import { DbBootstrapService } from './db/db-bootstrap.service';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module({
   imports: [
@@ -18,17 +18,24 @@ import { NoteModule } from './note/note.module';
         type: 'postgres',
         url: cfg.get<string>('DATABASE_URL'),
         autoLoadEntities: true,
-        synchronize: true, // TODO: use `false` (run migs manually)
-        dropSchema: true, // TODO: delete this - `true` only during initial dev phase
+        namingStrategy: new SnakeNamingStrategy(),
+        synchronize: process.env.SYNC_MIGRATIONS
+          ? process.env.SYNC_MIGRATIONS === 'true'
+          : false, // TODO: use `false` (run migs manually)
       }),
     }),
     HealthModule,
     UserModule,
-    ProjectModule,
-    TagModule,
-    NoteModule,
+    // ProjectModule,
+    // TagModule,
+    // NoteModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [DbBootstrapService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log(Boolean(process.env.SYNC_MIGRATIONS ?? false));
+    console.log(process.env.SYNC_MIGRATIONS);
+  }
+}

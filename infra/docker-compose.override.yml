@@ -9,6 +9,7 @@ services:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       JWT_SECRET_FILE: /run/secrets/jwt_secret
       JWT_EXPIRES: ${JWT_EXPIRES}
+      SYNC_MIGRATIONS: ${SYNC_MIGRATIONS}
     networks:
       - singularnet
     depends_on:
