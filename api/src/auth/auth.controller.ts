@@ -76,7 +76,6 @@ export class AuthController {
   @Get('me')
   async me(@Req() req: Request) {
     const principal = req.user as { userId: string; email: string };
-    console.log(principal);
     const full = await this.users.findById(principal.userId);
     return full ? this.users.sanitize(full) : null;
   }

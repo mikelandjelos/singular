@@ -9,7 +9,6 @@ function fromCookie(req: Request): string | null {
   const rawCookie: string | undefined = req.cookies?.access_token as
     | string
     | undefined;
-  console.log(rawCookie);
   return typeof rawCookie === 'string' ? rawCookie : null;
 }
 
@@ -27,7 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     userId: string;
     email: string;
   } {
-    console.log(`Validate: ${JSON.stringify(payload) ?? 'no-payload'}`);
     return { userId: payload.sub, email: payload.email };
   }
 }
