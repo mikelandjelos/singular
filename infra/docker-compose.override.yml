@@ -17,6 +17,8 @@ services:
         condition: service_healthy
     ports:
       - "${API_PORT}:3000"
+    command: >
+      sh -c 'export JWT_SECRET="$(cat $JWT_SECRET_FILE)" && node dist/main.js'
 
     # Consume the secret
     secrets:

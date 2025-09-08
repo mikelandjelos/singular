@@ -34,6 +34,7 @@ export class UserService {
       lastName: data.lastName,
       passwordHash,
     });
+
     this.logger.debug(`Created user: ${JSON.stringify(user)}`);
 
     return this.userRepository.save(user);
