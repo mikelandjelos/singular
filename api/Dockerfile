@@ -23,6 +23,7 @@ COPY --chown=nonroot:nonroot --from=build /app/node_modules ./node_modules
 COPY --chown=nonroot:nonroot package*.json ./
 
 COPY --chown=nonroot:nonroot healthcheck.mjs ./healthcheck.mjs
+COPY --chown=nonroot:nonroot bootstrap.mjs ./bootstrap.mjs
 
 USER nonroot:nonroot
 EXPOSE 3000
@@ -30,4 +31,4 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD ["/usr/bin/node","/app/healthcheck.mjs"]
 
-CMD ["dist/main.js"]
+CMD ["bootstrap.mjs"]

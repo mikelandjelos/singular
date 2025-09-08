@@ -10,15 +10,15 @@ export class DbBootstrapService implements OnModuleInit {
 
     await this.ds.query(`
       CREATE INDEX IF NOT EXISTS idx_app_user_display_trgm
-        ON app_user USING GIN (unaccent(display_name) gin_trgm_ops);
+        ON app_user USING GIN (display_name gin_trgm_ops);
     `);
     await this.ds.query(`
       CREATE INDEX IF NOT EXISTS idx_app_user_first_trgm
-        ON app_user USING GIN (unaccent(first_name) gin_trgm_ops);
+        ON app_user USING GIN (first_name gin_trgm_ops);
     `);
     await this.ds.query(`
       CREATE INDEX IF NOT EXISTS idx_app_user_last_trgm
-        ON app_user USING GIN (unaccent(last_name) gin_trgm_ops);
+        ON app_user USING GIN (last_name gin_trgm_ops);
     `);
   }
 }

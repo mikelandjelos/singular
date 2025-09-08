@@ -9,6 +9,7 @@ import {
   Query,
   ParseUUIDPipe,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -18,6 +19,7 @@ import {
   ApiNotFoundResponse,
   ApiParam,
   ApiQuery,
+  ApiCookieAuth,
   // ApiBearerAuth,
 } from '@nestjs/swagger';
 import { UserService } from './user.service';
@@ -29,9 +31,12 @@ import {
   SearchUsersQueryDto,
   UserResponseDto,
 } from './user.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @ApiTags('users')
 // @ApiBearerAuth()
+@ApiCookieAuth('access_token')
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -39,8 +44,8 @@ export class UserController {
   @ApiOperation({ summary: 'Create user' })
   @ApiCreatedResponse({ type: UserResponseDto })
   @Post()
-  async create(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
-    const user = await this.userService.create(dto);
+  async create(@Body() newUser: CreateUserDto): Promise<UserResponseDto> {
+    const user = await this.userService.create(newUser);
     return this.userService.sanitize(user);
   }
 
@@ -49,8 +54,13 @@ export class UserController {
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @Get()
-  async getAll(@Query() query: ListUsersQueryDto): Promise<UserResponseDto[]> {
-    const rows = await this.userService.findAll(query.offset, query.limit);
+  async getAll(
+    @Query() listUsersQuery: ListUsersQueryDto,
+  ): Promise<UserResponseDto[]> {
+    const rows = await this.userService.findAll(
+      listUsersQuery.offset,
+      listUsersQuery.limit,
+    );
     return rows.map((u) => this.userService.sanitize(u));
   }
 
@@ -60,8 +70,14 @@ export class UserController {
   @ApiQuery({ name: 'offset', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
   @Get('search')
-  async search(@Query() q: SearchUsersQueryDto): Promise<UserResponseDto[]> {
-    const rows = await this.userService.search(q.text, q.offset, q.limit);
+  async search(
+    @Query() searchUsersQuery: SearchUsersQueryDto,
+  ): Promise<UserResponseDto[]> {
+    const rows = await this.userService.search(
+      searchUsersQuery.text,
+      searchUsersQuery.offset,
+      searchUsersQuery.limit,
+    );
     return rows.map((u) => this.userService.sanitize(u));
   }
 
@@ -70,8 +86,10 @@ export class UserController {
   @ApiOkResponse({ type: UserResponseDto })
   @ApiNotFoundResponse({ description: 'User not found' })
   @Get('email/:email')
-  async getByEmail(@Param() q: GetByEmailParamDto): Promise<UserResponseDto> {
-    const found = await this.userService.findByEmail(q.email);
+  async getByEmail(
+    @Param() getByEmailParams: GetByEmailParamDto,
+  ): Promise<UserResponseDto> {
+    const found = await this.userService.findByEmail(getByEmailParams.email);
     if (!found) throw new NotFoundException(`User not found`);
     return this.userService.sanitize(found);
   }
@@ -95,7 +113,7 @@ export class UserController {
   @ApiNotFoundResponse({ description: 'User not found' })
   @Patch(':id')
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateUserDto,
   ): Promise<UserResponseDto> {
     const updated = await this.userService.update(id, dto);

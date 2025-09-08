@@ -8,6 +8,7 @@ import { HealthModule } from './health/health.module';
 // import { NoteModule } from './note/note.module';
 import { DbBootstrapService } from './db/db-bootstrap.service';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
           : false, // TODO: use `false` (run migs manually)
       }),
     }),
+    AuthModule,
     HealthModule,
     UserModule,
     // ProjectModule,
@@ -34,8 +36,5 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
   providers: [DbBootstrapService],
 })
 export class AppModule {
-  constructor() {
-    console.log(Boolean(process.env.SYNC_MIGRATIONS ?? false));
-    console.log(process.env.SYNC_MIGRATIONS);
-  }
+  constructor() {}
 }
