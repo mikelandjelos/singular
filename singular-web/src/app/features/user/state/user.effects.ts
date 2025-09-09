@@ -7,9 +7,9 @@ import { AuthActions } from '../../auth/state';
 
 @Injectable({ providedIn: 'root' })
 export class UserEffects {
-  private actions$ = inject(Actions);
-  private userApi = inject(UserApi);
-  private toast = inject(ToastService);
+  private readonly actions$ = inject(Actions);
+  private readonly userApi = inject(UserApi);
+  private readonly toast = inject(ToastService);
 
   update$ = createEffect(() =>
     this.actions$.pipe(
@@ -25,7 +25,7 @@ export class UserEffects {
     ),
   );
 
-  toastOnUpdateSuccess$ = createEffect(
+  onUpdateSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(UserActions.updateSuccess),
