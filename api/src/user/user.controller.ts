@@ -10,6 +10,7 @@ import {
   NotFoundException,
   UseGuards,
   ForbiddenException,
+  Put,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -100,7 +101,7 @@ export class UserController {
   @ApiParam({ name: 'id', description: 'User UUID' })
   @ApiOkResponse({ type: UserResponseDto })
   @ApiNotFoundResponse({ description: 'User not found' })
-  @Patch(':id')
+  @Put(':id')
   async update(
     @CurrentUserId() myId: string,
     @Param('id', ParseUUIDPipe) id: string,

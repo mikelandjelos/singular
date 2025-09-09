@@ -10,7 +10,7 @@ export class UserApi {
   private base = `${environment.apiUrl}/users`;
 
   update(id: string, dto: UpdateUserDto): Observable<User> {
-    return this.http.patch<User>(`${this.base}/${id}`, dto);
+    return this.http.put<User>(`${this.base}/${id}`, dto);
   }
 
   softDelete(id: string): Observable<{ ok: true }> {

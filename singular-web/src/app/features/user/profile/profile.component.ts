@@ -38,10 +38,9 @@ export class ProfileComponent {
   private store = inject<Store<AppState>>(Store);
 
   user$ = this.store.select(selectAuthUser);
-
   saving$ = this.store.select(selectUserSaving);
 
-  vm$ = combineLatest([this.user$, this.saving$]).pipe(map(([user, saving]) => ({ user, saving })));
+  viewModel$ = combineLatest([this.user$, this.saving$]).pipe(map(([user, saving]) => ({ user, saving })));
 
   refresh() {
     this.store.dispatch(AuthActions.loadMe());

@@ -125,4 +125,18 @@ export class UserEffects {
       map(() => AuthActions.logout()),
     ),
   );
+
+  userFailuresToast$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          UserActions.updateFailure,
+          UserActions.softDeleteFailure,
+          UserActions.restoreFailure,
+          UserActions.hardDeleteFailure,
+        ),
+        tap(({ error }) => this.toast.error(error || 'Something went wrong')),
+      ),
+    { dispatch: false },
+  );
 }
