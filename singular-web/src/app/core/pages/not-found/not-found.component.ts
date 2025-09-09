@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
   template: `
     <div class="nf">
       <h2>404 – Page not found</h2>
-      <button mat-stroked-button routerLink="/login">Go to Login</button>
+      <button mat-stroked-button routerLink="/login">Go Back</button>
     </div>
   `,
   styles: [

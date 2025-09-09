@@ -1,0 +1,43 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" [mode]="isSmallScreen() ? 'over' : 'side'">
+    <div class="sidenav-header">
+      <img src="logo.png" alt="Logo Image" />
+      <h1>Singular</h1>
+      <span>Your one-stop note taking place</span>
+      <mat-divider></mat-divider>
+    </div>
+    @if (userId$ | async; as userId) {
+      <mat-nav-list>
+        <a
+          mat-list-item
+          [routerLink]="['/', userId, 'home']"
+          (click)="isSmallScreen() ? closeDrawer() : null"
+        >
+          <mat-icon matListItemIcon>home</mat-icon>
+          <span matListItemTitle>Home</span>
+        </a>
+        <a
+          mat-list-item
+          [routerLink]="['/', userId, 'profile']"
+          (click)="isSmallScreen() ? closeDrawer() : null"
+        >
+          <mat-icon matListItemIcon>person</mat-icon>
+          <span matListItemTitle>Profile</span>
+        </a>
+      </mat-nav-list>
+    }
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="spacer"></span>
+      <button mat-button (click)="logout()">Logout</button>
+    </mat-toolbar>
+
+    <div class="content">
+      <router-outlet />
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

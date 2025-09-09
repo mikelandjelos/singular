@@ -1,0 +1,168 @@
+@if ((saving$ | async) === false; as notSaving) {
+  <section class="p-4">
+    <mat-card appearance="outlined" class="card">
+      <mat-card-header>
+        <mat-card-title>Edit Personal Info</mat-card-title>
+        <mat-card-subtitle>Update your profile details</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="form" class="grid">
+          <!-- Column 1 -->
+          <div>
+            <h3 class="section">Basics</h3>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Display name</mat-label>
+              <input matInput formControlName="displayName" />
+              <mat-error *ngIf="form.controls.displayName.hasError('required')">Required</mat-error>
+            </mat-form-field>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="w-50 pr">
+                <mat-label>First name</mat-label>
+                <input matInput formControlName="firstName" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="w-50">
+                <mat-label>Last name</mat-label>
+                <input matInput formControlName="lastName" />
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Headline</mat-label>
+              <input matInput formControlName="headline" />
+            </mat-form-field>
+
+            <h3 class="section">Contact</h3>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Phone</mat-label>
+              <input matInput formControlName="phone" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Location</mat-label>
+              <input matInput formControlName="location" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Website</mat-label>
+              <input matInput formControlName="website" />
+            </mat-form-field>
+          </div>
+
+          <!-- Column 2 -->
+          <div>
+            <h3 class="section">Skills</h3>
+            <mat-form-field class="chips-field" appearance="outline">
+              <mat-chip-grid #skillsChipGrid formControlName="skills">
+                @for (skill of form.controls.skills.value; track $index) {
+                  <mat-chip (removed)="removeSkill(skill)">
+                    {{ skill }}
+                    <button matChipRemove aria-label="Remove skill">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-chip>
+                }
+                <input
+                  placeholder="Add skill..."
+                  [matChipInputFor]="skillsChipGrid"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="addSkill($event)"
+                />
+              </mat-chip-grid>
+            </mat-form-field>
+
+            <h3 class="section">Languages</h3>
+            <mat-form-field class="chips-field" appearance="outline">
+              <mat-chip-grid #languagesChipGrid formControlName="languages">
+                @for (language of form.controls.languages.value; track $index) {
+                  <mat-chip (removed)="removeLanguage(language)">
+                    {{ language }}
+                    <button matChipRemove aria-label="Remove Language">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-chip>
+                }
+                <input
+                  placeholder="Add language..."
+                  [matChipInputFor]="languagesChipGrid"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                  (matChipInputTokenEnd)="addLanguage($event)"
+                />
+              </mat-chip-grid>
+            </mat-form-field>
+
+            <h3 class="section">Links</h3>
+            <div class="links">
+              @for (link of linksFA.controls; track $index) {
+                <div class="link-row" [formGroup]="link">
+                  <mat-form-field appearance="outline" class="w-40 pr">
+                    <mat-label>Label</mat-label>
+                    <input matInput formControlName="label" />
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="w-60 pr">
+                    <mat-label>URL</mat-label>
+                    <input matInput formControlName="url" />
+                  </mat-form-field>
+
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    aria-label="Remove link"
+                    (click)="removeLink($index)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              }
+              <button mat-stroked-button color="primary" type="button" (click)="addLink()">
+                <mat-icon>add</mat-icon>
+                Add link
+              </button>
+            </div>
+          </div>
+
+          <!-- Move this section inside the form -->
+          <div class="summary-section" style="grid-column: 1 / -1">
+            <mat-divider class="my-3"></mat-divider>
+
+            <div class="grid-2">
+              <div>
+                <h3 class="section">Summary (Markdown)</h3>
+                <mat-form-field appearance="outline" class="w-100">
+                  <mat-label>Summary (Markdown)</mat-label>
+                  <textarea matInput formControlName="summaryMd" rows="10"></textarea>
+                </mat-form-field>
+              </div>
+              <div>
+                <h3 class="section">Preview</h3>
+                <div class="preview">
+                  <markdown [data]="form.controls.summaryMd.value || ''"></markdown>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="save()"
+          [disabled]="!notSaving || form.invalid || !form.dirty"
+        >
+          Save
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </section>
+} @else {
+  <div class="overlay">
+    <mat-spinner diameter="32"></mat-spinner>
+  </div>
+}

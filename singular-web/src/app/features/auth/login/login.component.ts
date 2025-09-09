@@ -5,9 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { LoginDto } from '../../core/types/';
+import { LoginDto } from '../../../core/types/';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
+import { AppState } from '../../../app.state';
 import { AuthActions, selectAuthLoading } from '../state';
 import { Subject, takeUntil } from 'rxjs';
 

@@ -4,31 +4,50 @@ import { inverseAuthGuard } from './core/guards/inverse-auth.guard';
 
 export const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/login',
+  },
+  {
     path: 'login',
-    loadComponent: () => import('./auth/login/login.component').then((m) => m.LoginComponent),
+    loadComponent: () =>
+      import('./features/auth/login/login.component').then((m) => m.LoginComponent),
     canActivate: [inverseAuthGuard],
   },
   {
     path: 'register',
     loadComponent: () =>
-      import('./auth/register/register.component').then((m) => m.RegisterComponent),
+      import('./features/auth/register/register.component').then((m) => m.RegisterComponent),
     canActivate: [inverseAuthGuard],
   },
-
   {
-    path: ':id',
-    loadComponent: () => import('./layout/root/root.component').then((m) => m.RootComponent),
+    path: ':userId',
+    loadComponent: () => import('./core/layout/root/root.component').then((m) => m.RootComponent),
     canActivate: [authGuard],
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'profile' },
+      {
+        path: 'home',
+        loadComponent: () =>
+          import('./features/user/home/home.compontent').then((m) => m.HomeComponent),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./features/user/profile/profile.component').then((m) => m.ProfileComponent),
+      },
+      {
+        path: 'profile/edit',
+        loadComponent: () =>
+          import('./features/user/edit-personal-info/edit-personal-info.component').then(
+            (m) => m.EditPersonalInfoComponent,
+          ),
+      },
+    ],
   },
-
-  {
-    path: '',
-    redirectTo: '/login',
-    pathMatch: 'full',
-  },
-
   {
     path: '**',
-    loadComponent: () => import('./not-found/not-found.component').then((m) => m.NotFoundComponent),
+    loadComponent: () =>
+      import('./core/pages/not-found/not-found.component').then((m) => m.NotFoundComponent),
   },
 ];

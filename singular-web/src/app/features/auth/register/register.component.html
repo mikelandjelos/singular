@@ -24,6 +24,17 @@
   </mat-form-field>
 
   <mat-form-field class="form-field" appearance="outline">
+    <mat-label>Confirm Password</mat-label>
+    <input type="password" matInput formControlName="passwordConfirm" />
+    @if (form.controls.passwordConfirm.hasError('required')) {
+      <mat-error>Confirming password is required</mat-error>
+    }
+    @if (form.controls.passwordConfirm.hasError('minlength')) {
+      <mat-error>Min length 8</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="form-field" appearance="outline">
     <mat-label>Display name</mat-label>
     <input matInput formControlName="displayName" />
     @if (form.controls.displayName.hasError('required')) {
@@ -44,7 +55,9 @@
     <input matInput formControlName="lastName" />
   </mat-form-field>
 
-  <button mat-stroked-button type="submit" [disabled]="form.invalid || pending()">CREATE ACCOUNT</button>
+  <button mat-stroked-button type="submit" [disabled]="form.invalid || pending()">
+    CREATE ACCOUNT
+  </button>
 
   <div class="muted">
     Already have an account?

@@ -1,3 +1,5 @@
+import { User } from './user.types';
+
 export interface LoginDto {
   email: string;
   password: string;
@@ -11,32 +13,8 @@ export interface RegisterDto {
   lastName?: string;
 }
 
-export interface LinkDto {
-  label: string;
-  url: string;
-}
-
-export interface UserResponse {
-  id: string;
-  email: string;
-  displayName: string;
-  firstName?: string;
-  lastName?: string;
-  headline?: string;
-  phone?: string;
-  location?: string;
-  website?: string;
-  summaryMd?: string;
-  links?: LinkDto[];
-  skills?: string[];
-  languages?: string[];
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string | null;
-}
-
-export type AuthMeResponse = UserResponse;
+export type AuthMeResponse = User;
 
 export interface LoginResponse {
-  user: UserResponse;
+  user: User;
 }

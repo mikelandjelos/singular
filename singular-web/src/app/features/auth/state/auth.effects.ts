@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthActions } from './auth.actions';
-import { AuthService, ToastService } from '../../core/services';
+import { AuthService, ToastService } from '../../../core/services';
 import { Router } from '@angular/router';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 
@@ -43,7 +43,7 @@ export class AuthEffects {
       ofType(AuthActions.register),
       mergeMap(({ registerParams }) =>
         this.api.register(registerParams).pipe(
-          map((user) => AuthActions.registerSuccess({ user })),
+          map(() => AuthActions.registerSuccess()),
           catchError((err) =>
             of(
               AuthActions.registerFailure({ error: err?.error?.message ?? 'Registration failed' }),
@@ -59,7 +59,7 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.registerSuccess),
         tap(() => {
-          this.router.navigateByUrl('/login');
+          this.router.navigate(['/login']);
           this.toast.success('Account created! Please log in.');
         }),
       ),

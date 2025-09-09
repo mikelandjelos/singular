@@ -5,10 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { RegisterDto } from '../../core/types/';
+import { RegisterDto } from '../../../core/types/';
 import { Store } from '@ngrx/store';
 import { AuthActions, selectAuthLoading } from '../state';
-import { AppState } from '../../app.state';
+import { AppState } from '../../../app.state';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -40,6 +40,10 @@ export class RegisterComponent implements OnDestroy {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(8)],
     }),
+    passwordConfirm: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(8)],
+    }),
     displayName: new FormControl<string>('', {
       nonNullable: true,
       validators: [Validators.required, Validators.minLength(2), Validators.maxLength(50)],
@@ -58,6 +62,14 @@ export class RegisterComponent implements OnDestroy {
       this.form.markAllAsTouched();
       return;
     }
+
+    if (this.form.controls.password.value !== this.form.controls.passwordConfirm.value) {
+      this.form.controls.password.reset();
+      this.form.controls.passwordConfirm.reset();
+      this.store.dispatch(AuthActions.registerFailure({ error: 'Password confirmation failed' }));
+      return;
+    }
+
     this.pending.set(true);
 
     const registerParams: RegisterDto = {
