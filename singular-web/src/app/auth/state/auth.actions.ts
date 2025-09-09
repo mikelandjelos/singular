@@ -1,11 +1,11 @@
 import { createActionGroup, props, emptyProps } from '@ngrx/store';
-import { LoginDto, RegisterDto, UserResponse } from '../../core/types/';
+import { LoginDto, RegisterDto, User } from '../../core/types/';
 
 export const AuthActions = createActionGroup({
   source: 'Auth',
   events: {
     Login: props<{ loginParams: LoginDto }>(),
-    'Login Success': props<{ user: UserResponse }>(),
+    'Login Success': props<{ user: User }>(),
     'Login Failure': props<{ error: string }>(),
 
     Register: props<{ registerParams: RegisterDto }>(),
@@ -13,7 +13,7 @@ export const AuthActions = createActionGroup({
     'Register Failure': props<{ error: string }>(),
 
     'Load Me': emptyProps(),
-    'Load Me Success': props<{ user: UserResponse }>(),
+    'Load Me Success': props<{ user: User }>(),
     'Load Me Failure': props<{ error: string }>(),
 
     Logout: emptyProps(),
