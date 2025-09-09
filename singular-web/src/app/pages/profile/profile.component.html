@@ -1,0 +1,113 @@
+<section class="p-4">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>My Profile</mat-card-title>
+      <mat-card-subtitle>{{ (user$ | async)?.email }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (user$ | async; as user) {
+        <div class="grid">
+          <div>
+            <h3 class="section">Basics</h3>
+            <mat-list>
+              <mat-list-item>
+                <mat-icon matListItemIcon>account_circle</mat-icon>
+                <div matListItemTitle>{{ user.displayName }}</div>
+                <div matListItemLine>ID: {{ user.id }}</div>
+              </mat-list-item>
+              @if (user.firstName || user.lastName) {
+                <mat-list-item>
+                  <mat-icon matListItemIcon>badge</mat-icon>
+                  <div matListItemTitle>
+                    {{ (user.firstName || '') + ' ' + (user.lastName || '') }}
+                  </div>
+                  <div matListItemLine>Full name</div>
+                </mat-list-item>
+              }
+              @if (user.headline) {
+                <mat-list-item>
+                  <mat-icon matListItemIcon>short_text</mat-icon>
+                  <div matListItemTitle>{{ user.headline }}</div>
+                  <div matListItemLine>Headline</div>
+                </mat-list-item>
+              }
+            </mat-list>
+          </div>
+
+          <div>
+            <h3 class="section">Contact</h3>
+            <mat-list>
+              @if (user.phone) {
+                <mat-list-item>
+                  <mat-icon matListItemIcon>call</mat-icon>
+                  <div matListItemTitle>{{ user.phone }}</div>
+                  <div matListItemLine>Phone</div>
+                </mat-list-item>
+              }
+              @if (user.location) {
+                <mat-list-item>
+                  <mat-icon matListItemIcon>place</mat-icon>
+                  <div matListItemTitle>{{ user.location }}</div>
+                  <div matListItemLine>Location</div>
+                </mat-list-item>
+              }
+              @if (user.website) {
+                <mat-list-item>
+                  <mat-icon matListItemIcon>public</mat-icon>
+                  <div matListItemTitle>
+                    <a [href]="user.website" target="_blank" rel="noopener">{{ user.website }}</a>
+                  </div>
+                  <div matListItemLine>Website</div>
+                </mat-list-item>
+              }
+            </mat-list>
+          </div>
+        </div>
+
+        <mat-divider class="my-3"></mat-divider>
+
+        @if (user.skills?.length) {
+          <h3 class="section">Skills</h3>
+          <mat-chip-set>
+            @for (s of user.skills; track $index) {
+              <mat-chip>{{ s }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+
+        @if (user.languages?.length) {
+          <h3 class="section">Languages</h3>
+          <mat-chip-set>
+            @for (language of user.languages; track $index) {
+              <mat-chip>{{ language | titlecase }}</mat-chip>
+            }
+          </mat-chip-set>
+        }
+
+        @if (user.links?.length) {
+          <h3 class="section">Links</h3>
+          <mat-list>
+            @for (link of user.links; track $index) {
+              <mat-list-item>
+                <mat-icon matListItemIcon>link</mat-icon>
+                <div matListItemTitle>{{ link.label }}</div>
+                <div matListItemLine>
+                  <a [href]="link.url" target="_blank" rel="noopener">{{ link.url }}</a>
+                </div>
+              </mat-list-item>
+            }
+          </mat-list>
+        }
+        <mat-card-actions align="end">
+          <button mat-stroked-button class="refresh-button" color="primary" (click)="refresh()">
+            Refresh
+          </button>
+          <a mat-flat-button color="accent" [routerLink]="['/', user.id]"> Edit Personal Info </a>
+        </mat-card-actions>
+      } @else {
+        <div class="muted">No profile loaded.</div>
+      }
+    </mat-card-content>
+  </mat-card>
+</section>

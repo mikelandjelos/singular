@@ -3,12 +3,22 @@
 }
 
 .sidenav {
-  width: 200px;
+  min-width: 175px;
+  width: 15%;
 }
 
-.sidenav .mat-toolbar {
-  background: inherit;
+.sidenav-header {
+  padding: 16px;
+
+  h1 {
+    margin: 0 0 16px 0;
+    font-weight: 300;
+  }
 }
+
+// mat-divider {
+//   padding: 16px;
+// }
 
 .mat-toolbar.mat-primary {
   position: sticky;
@@ -22,4 +32,12 @@
 
 .content {
   padding: 1rem;
+}
+
+// Mobile specific styles
+@media (max-width: 768px) {
+  .sidenav {
+    min-width: 175px;
+    width: 60%;
+  }
 }
