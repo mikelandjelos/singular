@@ -57,7 +57,7 @@ export class UserService {
     return user;
   }
 
-  search(searchedText: string, offset = 0, limit = 25) {
+  search(searchedText: string, offset = 0, limit = 25): Promise<User[]> {
     const p = `%${searchedText}%`;
 
     return this.userRepository
@@ -103,8 +103,18 @@ export class UserService {
     return await this.userRepository.save({ id, ...patchedProps });
   }
 
-  async softDelete(id: string) {
+  async softDelete(id: string): Promise<number | null | undefined> {
     const res = await this.userRepository.softDelete({ id });
     return res.affected;
+  }
+
+  async restore(id: string): Promise<number | null | undefined> {
+    const res = await this.userRepository.restore({ id });
+    return res.affected;
+  }
+
+  async hardDelete(id: string): Promise<number | null | undefined> {
+    const result = await this.userRepository.delete({ id });
+    return result.affected;
   }
 }

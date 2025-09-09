@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Patch,
   Delete,
   Param,
@@ -10,21 +9,19 @@ import {
   ParseUUIDPipe,
   NotFoundException,
   UseGuards,
+  ForbiddenException,
 } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiOkResponse,
-  ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiParam,
   ApiQuery,
   ApiCookieAuth,
-  // ApiBearerAuth,
 } from '@nestjs/swagger';
 import { UserService } from './user.service';
 import {
-  CreateUserDto,
   UpdateUserDto,
   ListUsersQueryDto,
   GetByEmailParamDto,
@@ -32,22 +29,14 @@ import {
   UserResponseDto,
 } from './user.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { CurrentUserId } from 'src/auth/decorators/current-user-id.decorator';
 
 @ApiTags('users')
-// @ApiBearerAuth()
 @ApiCookieAuth('access_token')
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  @ApiOperation({ summary: 'Create user' })
-  @ApiCreatedResponse({ type: UserResponseDto })
-  @Post()
-  async create(@Body() newUser: CreateUserDto): Promise<UserResponseDto> {
-    const user = await this.userService.create(newUser);
-    return this.userService.sanitize(user);
-  }
 
   @ApiOperation({ summary: 'List users' })
   @ApiOkResponse({ type: UserResponseDto, isArray: true })
@@ -107,28 +96,72 @@ export class UserController {
     return this.userService.sanitize(found);
   }
 
-  @ApiOperation({ summary: 'Update user' })
+  @ApiOperation({ summary: 'Update self' })
   @ApiParam({ name: 'id', description: 'User UUID' })
   @ApiOkResponse({ type: UserResponseDto })
   @ApiNotFoundResponse({ description: 'User not found' })
   @Patch(':id')
   async update(
+    @CurrentUserId() myId: string,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateUserDto,
   ): Promise<UserResponseDto> {
+    console.log(myId);
+    if (myId !== id)
+      throw new ForbiddenException(`User ${myId} cannot update user ${id}!`);
     const updated = await this.userService.update(id, dto);
     if (!updated) throw new NotFoundException('User not found');
     return this.userService.sanitize(updated);
   }
 
-  @ApiOperation({ summary: 'Soft delete user' })
+  @ApiOperation({ summary: 'Soft delete self' })
   @ApiParam({ name: 'id', description: 'User UUID' })
   @ApiOkResponse({ schema: { example: { ok: true } } })
   @ApiNotFoundResponse({ description: 'User not found' })
   @Delete(':id')
-  async remove(@Param('id', ParseUUIDPipe) id: string) {
+  async remove(
+    @CurrentUserId() myId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    console.log(myId);
+    if (myId !== id)
+      throw new ForbiddenException(
+        `User ${myId} cannot soft delete user ${id}!`,
+      );
     const affected = await this.userService.softDelete(id);
     if (!affected) throw new NotFoundException('User not found');
+    return { ok: true };
+  }
+
+  @ApiOperation({ summary: 'Restore self (after self-deletion)' })
+  @ApiParam({ name: 'id', description: 'User UUID' })
+  @ApiOkResponse({ schema: { example: { ok: true } } })
+  @ApiNotFoundResponse({ description: 'User not found' })
+  @Patch('restore/:id')
+  async restore(
+    @CurrentUserId() myId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    console.log(myId);
+    if (myId !== id)
+      throw new ForbiddenException(`User ${myId} cannot restore user ${id}!`);
+    const affected = await this.userService.restore(id);
+    if (!affected) throw new NotFoundException('User not found');
+    return { ok: true };
+  }
+
+  @ApiOperation({ summary: 'Hard delete self (irreversible)' })
+  @ApiOkResponse({ schema: { example: { ok: true } } })
+  @Delete('hard/:id')
+  async hardDelete(
+    @CurrentUserId() myId: string,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    if (myId !== id)
+      throw new ForbiddenException(
+        `User ${myId} cannot hard delete user ${id}!`,
+      );
+    await this.userService.hardDelete(id);
     return { ok: true };
   }
 }
