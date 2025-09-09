@@ -115,7 +115,6 @@ export class EditPersonalInfoComponent implements OnInit {
       .subscribe();
   }
 
-  // --- Skills ---
   addSkill(evt: MatChipInputEvent) {
     const value = (evt.value || '').trim();
     if (!value) return;
@@ -130,7 +129,6 @@ export class EditPersonalInfoComponent implements OnInit {
     this.form.controls.skills.setValue(skills);
   }
 
-  // --- Languages ---
   addLanguage(evt: MatChipInputEvent) {
     const value = (evt.value || '').trim();
     if (!value) return;
@@ -144,7 +142,6 @@ export class EditPersonalInfoComponent implements OnInit {
     this.form.controls.languages.setValue(languages);
   }
 
-  // --- Links ---
   addLink() {
     this.linksFA.push(
       this.fb.group({
