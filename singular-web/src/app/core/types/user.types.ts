@@ -21,3 +21,17 @@ export interface User {
   updatedAt: string;
   deletedAt?: string | null;
 }
+
+export class UpdateUserDto {
+  displayName?: string;
+  firstName?: string;
+  lastName?: string;
+  headline?: string;
+  phone?: string;
+  location?: string;
+  website?: string;
+  summaryMd?: string;
+  links?: LinkDto[];
+  skills?: string[];
+  languages?: string[];
+}

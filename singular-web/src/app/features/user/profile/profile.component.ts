@@ -39,4 +39,12 @@ export class ProfileComponent {
   refresh() {
     this.store.dispatch(AuthActions.loadMe());
   }
+
+  softDelete() {
+    console.log('Soft Deletion');
+  }
+
+  hardDelete() {
+    console.log('Hard Deletion');
+  }
 }

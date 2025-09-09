@@ -16,7 +16,7 @@ export class User {
   @Column() passwordHash: string;
 
   // app display
-  @Column() displayName: string;
+  @Column({ unique: true }) displayName: string;
 
   // profile
   @Column({ nullable: true }) firstName?: string;

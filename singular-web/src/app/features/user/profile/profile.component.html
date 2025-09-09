@@ -117,13 +117,15 @@
             }
           </div>
         </div>
-        <mat-card-actions align="end">
-          <button mat-stroked-button class="refresh-button" color="primary" (click)="refresh()">
+        <mat-card-actions class="actions-container" align="start">
+          <button mat-stroked-button color="primary" (click)="refresh()">
             Refresh
           </button>
           <a mat-flat-button color="accent" [routerLink]="['/', user.id, 'profile', 'edit']">
             Edit Personal Info
           </a>
+          <button mat-button class="warning" (click)="softDelete()">Archive</button>
+          <button mat-button class="error" (click)="hardDelete()">Delete</button>
         </mat-card-actions>
       </mat-card-content>
     </mat-card>

@@ -1,7 +1,9 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #drawer class="sidenav" [mode]="isSmallScreen() ? 'over' : 'side'">
     <div class="sidenav-header">
+      <img src="logo.png" alt="Logo Image" />
       <h1>Singular</h1>
+      <span>Your one-stop note taking place</span>
       <mat-divider></mat-divider>
     </div>
     @if (userId$ | async; as userId) {

@@ -29,17 +29,17 @@ export const routes: Routes = [
       {
         path: 'home',
         loadComponent: () =>
-          import('./features/profile/home/home.compontent').then((m) => m.HomeComponent),
+          import('./features/user/home/home.compontent').then((m) => m.HomeComponent),
       },
       {
         path: 'profile',
         loadComponent: () =>
-          import('./features/profile/profile/profile.component').then((m) => m.ProfileComponent),
+          import('./features/user/profile/profile.component').then((m) => m.ProfileComponent),
       },
       {
         path: 'profile/edit',
         loadComponent: () =>
-          import('./features/profile/edit-personal-info/edit-personal-info.component').then(
+          import('./features/user/edit-personal-info/edit-personal-info.component').then(
             (m) => m.EditPersonalInfoComponent,
           ),
       },
