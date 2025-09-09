@@ -6,13 +6,15 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
+
 import { AppState } from '../../../app.state';
 import { selectAuthUser, AuthActions } from '../../auth/state';
+import { UserActions, selectUserSaving } from '../state';
 import { MarkdownModule } from 'ngx-markdown';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { delay } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -26,25 +28,40 @@ import { delay } from 'rxjs';
     MatButtonModule,
     MatDividerModule,
     MatListModule,
-    MarkdownModule,
     MatProgressSpinnerModule,
+    MarkdownModule,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
   private store = inject<Store<AppState>>(Store);
-  user$ = this.store.select(selectAuthUser).pipe(delay(1000));
+
+  user$ = this.store.select(selectAuthUser);
+
+  saving$ = this.store.select(selectUserSaving);
+
+  vm$ = combineLatest([this.user$, this.saving$]).pipe(map(([user, saving]) => ({ user, saving })));
 
   refresh() {
     this.store.dispatch(AuthActions.loadMe());
   }
 
-  softDelete() {
-    console.log('Soft Deletion');
+  softDelete(userId?: string) {
+    if (!userId) return;
+    if (!confirm('Archive your account? You can restore later.')) return;
+    this.store.dispatch(UserActions.softDelete({ id: userId }));
   }
 
-  hardDelete() {
-    console.log('Hard Deletion');
+  restore(userId?: string) {
+    if (!userId) return;
+    this.store.dispatch(UserActions.restore({ id: userId }));
+  }
+
+  hardDelete(userId?: string) {
+    if (!userId) return;
+    const sure = prompt('Type DELETE to permanently remove your account:');
+    if (sure !== 'DELETE') return;
+    this.store.dispatch(UserActions.hardDelete({ id: userId }));
   }
 }

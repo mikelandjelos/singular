@@ -37,6 +37,13 @@
   justify-content: end;
 }
 
+.mat-mdc-button.success,
+.mat-mdc-raised-button.success,
+.mat-mdc-flat-button.success {
+  background-color: #4caf50; // green
+  color: white;
+}
+
 .mat-mdc-button.warning,
 .mat-mdc-raised-button.warning,
 .mat-mdc-flat-button.warning {
@@ -49,4 +56,23 @@
 .mat-mdc-flat-button.error {
   background-color: #f44336; // red
   color: white;
+}
+
+.ml-2 {
+  margin-left: 8px;
+}
+.my-3 {
+  margin: 16px 0;
+}
+.muted {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
 }

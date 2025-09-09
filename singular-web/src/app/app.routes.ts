@@ -25,7 +25,7 @@ export const routes: Routes = [
     loadComponent: () => import('./core/layout/root/root.component').then((m) => m.RootComponent),
     canActivate: [authGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'home' },
+      { path: '', pathMatch: 'full', redirectTo: 'profile' },
       {
         path: 'home',
         loadComponent: () =>

@@ -6,7 +6,7 @@ import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { AuthActions } from '../../auth/state';
 
 @Injectable({ providedIn: 'root' })
-export class ProfileEffects {
+export class UserEffects {
   private actions$ = inject(Actions);
   private userApi = inject(UserApi);
   private toast = inject(ToastService);

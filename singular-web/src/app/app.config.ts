@@ -15,7 +15,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpCredentialsInterceptor } from './core/interceptors/';
 import { AuthEffects, authReducer } from './features/auth/state';
 import { provideMarkdown } from 'ngx-markdown';
-import { userReducer } from './features/user/state';
+import { UserEffects, userReducer } from './features/user/state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,7 +28,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(withInterceptors([httpCredentialsInterceptor])),
     provideStore({ auth: authReducer, user: userReducer, router: routerReducer }),
-    provideEffects([AuthEffects]),
+    provideEffects([AuthEffects, UserEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideRouterStore(),
     provideMarkdown(),

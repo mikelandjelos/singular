@@ -49,7 +49,7 @@ export class UserService {
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.userRepository.findOne({ where: { id } });
+    return this.userRepository.findOne({ where: { id }, withDeleted: true });
   }
 
   async findByEmail(email: string): Promise<User | null> {
