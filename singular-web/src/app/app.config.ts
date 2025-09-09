@@ -14,6 +14,7 @@ import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpCredentialsInterceptor } from './core/interceptors/';
 import { AuthEffects, authReducer } from './auth/state';
+import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
-      // TODO: this can be buggy
+      // TODO: this has a potential to be buggy
       withRouterConfig({ paramsInheritanceStrategy: 'always' }),
     ),
     provideHttpClient(withInterceptors([httpCredentialsInterceptor])),
@@ -29,5 +30,6 @@ export const appConfig: ApplicationConfig = {
     provideEffects([AuthEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideRouterStore(),
+    provideMarkdown(),
   ],
 };

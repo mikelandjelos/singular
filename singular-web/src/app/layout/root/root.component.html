@@ -22,14 +22,6 @@
           <mat-icon matListItemIcon>person</mat-icon>
           <span matListItemTitle>Profile</span>
         </a>
-        <a
-          mat-list-item
-          [routerLink]="['/', userId, 'profile', 'edit']"
-          (click)="isSmallScreen() ? closeDrawer() : null"
-        >
-          <mat-icon matListItemIcon>edit</mat-icon>
-          <span matListItemTitle>Edit Personal Info</span>
-        </a>
       </mat-nav-list>
     }
   </mat-sidenav>

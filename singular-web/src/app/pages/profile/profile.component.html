@@ -1,12 +1,17 @@
 <section class="p-4">
-  <mat-card appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>My Profile</mat-card-title>
-      <mat-card-subtitle>{{ (user$ | async)?.email }}</mat-card-subtitle>
-    </mat-card-header>
+  @if (user$ | async; as user) {
+    <mat-card appearance="outlined">
+      <mat-card-header>
+        <mat-card-title>My Profile</mat-card-title>
+        <mat-card-subtitle
+          >{{ user?.email }} (<b [className]="user.deletedAt === null ? 'green' : 'red'">{{
+            user.deletedAt === null ? 'Activated' : 'Archived'
+          }}</b
+          >)</mat-card-subtitle
+        >
+      </mat-card-header>
 
-    <mat-card-content>
-      @if (user$ | async; as user) {
+      <mat-card-content>
         <div class="grid">
           <div>
             <h3 class="section">Basics</h3>
@@ -65,49 +70,66 @@
           </div>
         </div>
 
+        @if (user.summaryMd) {
+          <mat-divider class="my-3"></mat-divider>
+          <h3 class="section">Summary</h3>
+          <markdown [data]="user.summaryMd"></markdown>
+        }
+
         <mat-divider class="my-3"></mat-divider>
 
-        @if (user.skills?.length) {
-          <h3 class="section">Skills</h3>
-          <mat-chip-set>
-            @for (s of user.skills; track $index) {
-              <mat-chip>{{ s }}</mat-chip>
+        <div class="grid">
+          <!-- Skills + Languages -->
+          <div>
+            @if (user.skills?.length) {
+              <h3 class="section">Skills</h3>
+              <mat-chip-set>
+                @for (s of user.skills; track $index) {
+                  <mat-chip>{{ s }}</mat-chip>
+                }
+              </mat-chip-set>
             }
-          </mat-chip-set>
-        }
+            @if (user.languages?.length) {
+              <h3 class="section">Languages</h3>
+              <mat-chip-set>
+                @for (language of user.languages; track $index) {
+                  <mat-chip>{{ language | titlecase }}</mat-chip>
+                }
+              </mat-chip-set>
+            }
+          </div>
 
-        @if (user.languages?.length) {
-          <h3 class="section">Languages</h3>
-          <mat-chip-set>
-            @for (language of user.languages; track $index) {
-              <mat-chip>{{ language | titlecase }}</mat-chip>
+          <!-- Links -->
+          <div>
+            @if (user.links?.length) {
+              <h3 class="section">Links</h3>
+              <mat-list>
+                @for (link of user.links; track $index) {
+                  <mat-list-item>
+                    <mat-icon matListItemIcon>link</mat-icon>
+                    <div matListItemTitle>{{ link.label }}</div>
+                    <div matListItemLine>
+                      <a [href]="link.url" target="_blank" rel="noopener">{{ link.url }}</a>
+                    </div>
+                  </mat-list-item>
+                }
+              </mat-list>
             }
-          </mat-chip-set>
-        }
-
-        @if (user.links?.length) {
-          <h3 class="section">Links</h3>
-          <mat-list>
-            @for (link of user.links; track $index) {
-              <mat-list-item>
-                <mat-icon matListItemIcon>link</mat-icon>
-                <div matListItemTitle>{{ link.label }}</div>
-                <div matListItemLine>
-                  <a [href]="link.url" target="_blank" rel="noopener">{{ link.url }}</a>
-                </div>
-              </mat-list-item>
-            }
-          </mat-list>
-        }
+          </div>
+        </div>
         <mat-card-actions align="end">
           <button mat-stroked-button class="refresh-button" color="primary" (click)="refresh()">
             Refresh
           </button>
-          <a mat-flat-button color="accent" [routerLink]="['/', user.id]"> Edit Personal Info </a>
+          <a mat-flat-button color="accent" [routerLink]="['/', user.id, 'profile', 'edit']">
+            Edit Personal Info
+          </a>
         </mat-card-actions>
-      } @else {
-        <div class="muted">No profile loaded.</div>
-      }
-    </mat-card-content>
-  </mat-card>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  }
 </section>
