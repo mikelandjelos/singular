@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthModule } from './health/health.module';
-// import { ProjectModule } from './project/project.module';
+import { ProjectModule } from './project/project.module';
 // import { TagModule } from './tag/tag.module';
 // import { NoteModule } from './note/note.module';
 import { DbBootstrapService } from './db/db-bootstrap.service';
@@ -28,7 +28,7 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     HealthModule,
     UserModule,
-    // ProjectModule,
+    ProjectModule,
     // TagModule,
     // NoteModule,
   ],
