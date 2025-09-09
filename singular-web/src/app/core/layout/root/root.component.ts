@@ -7,13 +7,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
-import { AuthActions } from '../../auth/state';
+import { AppState } from '../../../app.state';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { selectRouteParam } from '../../core/state';
+import { selectRouteParam } from '../../state';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { AuthActions } from '../../../features/auth/state';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +36,7 @@ export class RootComponent {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly drawer = viewChild.required<MatSidenav>('drawer');
 
-  userId$ = this.store.select(selectRouteParam('id'));
+  userId$ = this.store.select(selectRouteParam('userId'));
 
   isSmallScreen = toSignal(
     this.breakpointObserver

@@ -2,7 +2,7 @@ import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map, take, tap, combineLatest, filter } from 'rxjs';
-import { selectAuthLoading, selectAuthUser } from '../../auth/state';
+import { selectAuthLoading, selectAuthUser } from '../../features/auth/state';
 
 export const inverseAuthGuard: CanActivateFn = () => {
   const store = inject(Store);

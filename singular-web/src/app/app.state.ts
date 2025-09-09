@@ -1,5 +1,5 @@
 import { RouterState } from '@ngrx/router-store';
-import { AuthState } from './auth/state';
+import { AuthState } from './features/auth/state';
 
 export interface AppState {
   auth: AuthState;

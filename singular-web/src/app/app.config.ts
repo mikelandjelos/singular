@@ -13,7 +13,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore, routerReducer } from '@ngrx/router-store';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpCredentialsInterceptor } from './core/interceptors/';
-import { AuthEffects, authReducer } from './auth/state';
+import { AuthEffects, authReducer } from './features/auth/state';
 import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {

@@ -137,7 +137,7 @@ export class UserController {
   @ApiParam({ name: 'id', description: 'User UUID' })
   @ApiOkResponse({ schema: { example: { ok: true } } })
   @ApiNotFoundResponse({ description: 'User not found' })
-  @Patch('restore/:id')
+  @Patch(':id/restore')
   async restore(
     @CurrentUserId() myId: string,
     @Param('id', ParseUUIDPipe) id: string,
@@ -152,7 +152,7 @@ export class UserController {
 
   @ApiOperation({ summary: 'Hard delete self (irreversible)' })
   @ApiOkResponse({ schema: { example: { ok: true } } })
-  @Delete('hard/:id')
+  @Delete(':id/hard')
   async hardDelete(
     @CurrentUserId() myId: string,
     @Param('id', ParseUUIDPipe) id: string,

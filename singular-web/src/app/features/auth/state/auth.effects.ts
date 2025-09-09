@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthActions } from './auth.actions';
-import { AuthService, ToastService } from '../../core/services';
+import { AuthService, ToastService } from '../../../core/services';
 import { Router } from '@angular/router';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 

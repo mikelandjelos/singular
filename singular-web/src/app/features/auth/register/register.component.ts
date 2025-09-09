@@ -5,10 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { RegisterDto } from '../../core/types/';
+import { RegisterDto } from '../../../core/types/';
 import { Store } from '@ngrx/store';
 import { AuthActions, selectAuthLoading } from '../state';
-import { AppState } from '../../app.state';
+import { AppState } from '../../../app.state';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({

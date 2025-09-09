@@ -8,7 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.state';
+import { AppState } from '../../../app.state';
 import { selectAuthUser, AuthActions } from '../../auth/state';
 import { MarkdownModule } from 'ngx-markdown';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';

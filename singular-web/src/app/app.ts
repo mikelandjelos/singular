@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from './app.state';
-import { AuthActions } from './auth/state';
+import { AuthActions } from './features/auth/state';
 
 @Component({
   selector: 'app-root',
