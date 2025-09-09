@@ -1,15 +1,15 @@
 .card {
-  position: relative;
   width: 100%;
+  display:flex; flex-direction:column; height:100%;
 }
 
 .column {
-  width: 94%;
+  width: 100%;
   min-width: 0;
 }
 
 .card-content {
-  width: 100%;
+  flex:1 1 auto; display:grid;
 }
 
 .section {
@@ -102,5 +102,5 @@
 
 .summary-section {
   grid-column: 1 / -1;
-  width: 94%;
+  width: 100%;
 }
