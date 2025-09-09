@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -7,8 +7,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.state';
-import { AuthActions, selectAuthUser } from '../../auth/state';
-import { RouterOutlet } from '@angular/router';
+import { AuthActions } from '../../auth/state';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { selectRouteParam } from '../../core/state';
 
 @Component({
   selector: 'app-root',
@@ -16,18 +17,19 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './root.component.scss',
   imports: [
     CommonModule,
-    RouterOutlet, // TODO: careful with multiple router outlets
+    RouterOutlet,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
     MatIconModule,
-    AsyncPipe,
+    RouterLink,
   ],
 })
 export class RootComponent {
   private store = inject<Store<AppState>>(Store);
-  user$ = this.store.select(selectAuthUser);
+
+  userId$ = this.store.select(selectRouteParam('id'));
 
   logout() {
     this.store.dispatch(AuthActions.logout());

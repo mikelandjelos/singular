@@ -22,12 +22,15 @@ export const authReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(
-    AuthActions.loginSuccess,
-    AuthActions.registerSuccess,
-    AuthActions.loadMeSuccess,
-    (s, { user }) => ({ ...s, user, loading: false }),
-  ),
+  on(AuthActions.loginSuccess, AuthActions.loadMeSuccess, (s, { user }) => ({
+    ...s,
+    user,
+    loading: false,
+  })),
+  on(AuthActions.registerSuccess, (s) => ({
+    ...s,
+    loading: false,
+  })),
   on(
     AuthActions.loginFailure,
     AuthActions.registerFailure,

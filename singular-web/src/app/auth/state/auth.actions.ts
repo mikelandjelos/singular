@@ -9,7 +9,7 @@ export const AuthActions = createActionGroup({
     'Login Failure': props<{ error: string }>(),
 
     Register: props<{ registerParams: RegisterDto }>(),
-    'Register Success': props<{ user: UserResponse }>(),
+    'Register Success': emptyProps(),
     'Register Failure': props<{ error: string }>(),
 
     'Load Me': emptyProps(),
