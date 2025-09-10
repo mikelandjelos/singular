@@ -18,6 +18,10 @@ import { AuthEffects, authReducer } from './features/auth/state';
 import { provideMarkdown } from 'ngx-markdown';
 import { UserEffects, userReducer } from './features/user/state';
 import { ProjectEffects } from './features/project/state/project.effects';
+import { noteReducer } from './features/note/state/note.reducer';
+import { tagReducer } from './features/tag/state/tag.reducer';
+import { NoteEffects } from './features/note/state/note.effects';
+import { TagEffects } from './features/tag/state/tag.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,9 +33,11 @@ export const appConfig: ApplicationConfig = {
       auth: authReducer,
       user: userReducer,
       project: projectReducer,
+      note: noteReducer,
+      tag: tagReducer,
       router: routerReducer,
     }),
-    provideEffects([AuthEffects, UserEffects, ProjectEffects]),
+    provideEffects([AuthEffects, UserEffects, ProjectEffects, NoteEffects, TagEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideRouterStore(),
     provideMarkdown(),
