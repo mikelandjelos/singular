@@ -91,19 +91,17 @@ export class ProjectService {
   }> {
     const offset = p.offset ?? 0;
     const limit = p.limit ?? 20;
-    const archived = !!p.archived;
+    const includeArchived = !!p.archived;
     const search = p.q?.trim();
-
-    this.logger.debug(archived);
 
     const qb = this.projectRepository
       .createQueryBuilder('p')
       .where('p.owner_id = :ownerId', { ownerId });
 
-    if (archived) {
-      qb.withDeleted().andWhere('p.deleted_at IS NOT NULL');
+    if (includeArchived) {
+      qb.withDeleted(); // active and archived
     } else {
-      qb.andWhere('p.deleted_at IS NULL');
+      qb.andWhere('p.deleted_at IS NULL'); // only active
     }
 
     if (search) {

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -108,22 +108,35 @@ import { ProjectDialogComponent } from '../project-dialog/project-dialog.compone
           <td mat-cell *matCellDef="let p">{{ p.updatedAt | date: 'medium' }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let p">
+            <button
+              matButton="outlined"
+              [disabled]="p.deletedAt"
+              [inert]="true"
+              [class]="p.deletedAt ? 'success' : 'error'"
+              [class.archived]="!!p.deletedAt"
+              [class.active]="!p.deletedAt"
+            >
+              {{ p.deletedAt ? 'Archived' : 'Active' }}
+            </button>
+          </td>
+        </ng-container>
+
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef></th>
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let p">
             <button mat-icon-button matTooltip="Edit" (click)="openEditDialog(p)">
               <mat-icon>edit</mat-icon>
             </button>
 
-            @if (!archived()) {
-              <button mat-icon-button matTooltip="Archive" (click)="archive(p)">
-                <mat-icon>archive</mat-icon>
-              </button>
-            } @else {
-              <button mat-icon-button matTooltip="Restore" (click)="restore(p)">
-                <mat-icon>unarchive</mat-icon>
-              </button>
-            }
+            <button mat-icon-button *ngIf="!p.deletedAt" matTooltip="Archive" (click)="archive(p)">
+              <mat-icon>archive</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="p.deletedAt" matTooltip="Restore" (click)="restore(p)">
+              <mat-icon>unarchive</mat-icon>
+            </button>
 
             <button
               mat-icon-button
@@ -136,10 +149,10 @@ import { ProjectDialogComponent } from '../project-dialog/project-dialog.compone
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="cols"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedCols()"></tr>
         <tr
           mat-row
-          *matRowDef="let row; columns: cols"
+          *matRowDef="let row; columns: displayedCols()"
           [ngStyle]="rowStyle(row)"
           [class.row-pinned]="row.pinned"
         ></tr>
@@ -234,6 +247,12 @@ export class ProjectsPageComponent implements OnInit {
   paging = this.store.selectSignal(selectPaging);
 
   q = '';
+
+  displayedCols = computed(() =>
+    this.archived()
+      ? ['pinned', 'name', 'updatedAt', 'status', 'actions']
+      : ['pinned', 'name', 'updatedAt', 'actions'],
+  );
 
   ngOnInit() {
     this.store.dispatch(ProjectActions.loadPage());
