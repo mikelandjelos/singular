@@ -1,0 +1,100 @@
+<div class="toolbar">
+      <mat-form-field appearance="outline" class="search">
+        <mat-label>Search notes</mat-label>
+        <input matInput [formControl]="searchCtrl" placeholder="Title or content" />
+        <button
+          *ngIf="searchCtrl.value"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="searchCtrl.setValue('')"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <div class="label">Tags</div>
+
+        <mat-chip-listbox multiple class="chips" aria-label="Tag filters">
+          @for (t of tags$ | async; track $index) {
+            <mat-chip-option
+              [selected]="selectedTagIds().has(t.id)"
+              (selectionChange)="toggleTag(t.id)"
+              class="tag-chip"
+            >
+              <span class="dot" [style.background]="t.color || '#e5e7eb'"></span>
+              {{ t.name }}
+            </mat-chip-option>
+          }
+        </mat-chip-listbox>
+      </div>
+
+      <div class="filter-group">
+        <div class="chips">
+          <mat-chip-row
+            *ngFor="let p of selectedProjects()"
+            (removed)="removeProject(p.id)"
+            class="proj-chip"
+          >
+            <span class="proj-dot" [style.background]="p.color || '#e5e7eb'"></span>{{ p.name }}
+            <button matChipRemove><mat-icon>close</mat-icon></button>
+          </mat-chip-row>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="loading$ | async; else gridTmpl">
+      <div class="loading">
+        <mat-spinner diameter="32"></mat-spinner>
+      </div>
+    </ng-container>
+
+    <ng-template #gridTmpl>
+      <div class="grid">
+        <!-- Plus card -->
+        <button class="plus-card" (click)="openCreateDialog()">
+          <mat-icon>add</mat-icon>
+          <div>New Note</div>
+        </button>
+
+        <!-- Note cards -->
+        <mat-card class="note-card" *ngFor="let n of notes$ | async">
+          <mat-card-header>
+            <mat-card-title class="title" [matTooltip]="n.title">{{ n.title }}</mat-card-title>
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="more">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="edit(n.id)">
+                <mat-icon>edit</mat-icon><span>Edit</span>
+              </button>
+              <button mat-menu-item (click)="archive(n.id)">
+                <mat-icon>inventory_2</mat-icon><span>Archive</span>
+              </button>
+              <button mat-menu-item (click)="hardDelete(n.id)">
+                <mat-icon>delete</mat-icon><span>Delete</span>
+              </button>
+            </mat-menu>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="preview">{{ excerpt(n.content) }}</div>
+
+            <div class="meta">
+              <div class="proj" *ngIf="n.project">
+                <span class="proj-dot" [style.background]="n.project?.color || '#e5e7eb'"></span>
+                {{ n.project?.name }}
+              </div>
+              <div class="tag-list">
+                <mat-chip-row *ngFor="let t of n.tags" class="tag small">
+                  <span class="dot" [style.background]="t.color || '#e5e7eb'"></span>{{ t.name }}
+                </mat-chip-row>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-template>

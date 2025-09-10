@@ -1,0 +1,123 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 16px;
+}
+.toolbar .search {
+  flex: 1 1 480px;
+  max-width: 640px;
+}
+.spacer {
+  flex: 1;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 4px 0 12px;
+}
+.filter-group .label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag-chip,
+.proj-chip {
+  --chip-color: #e5e7eb;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.tag-chip .dot,
+.tag.small .dot,
+.proj-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+.project-ac {
+  min-width: 260px;
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.plus-card {
+  border: 2px dashed rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  background: transparent;
+}
+.plus-card mat-icon {
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+}
+.note-card {
+  border-radius: 12px;
+}
+.note-card .title {
+  font-weight: 600;
+  line-height: 1.2;
+  padding-right: 32px;
+}
+.note-card .more {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+}
+.preview {
+  margin: 8px 0 12px;
+  color: rgba(0, 0, 0, 0.75);
+  min-height: 42px;
+}
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.meta .proj {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+.tag-list {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tag.small {
+  font-size: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+@media (max-width: 900px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+}
