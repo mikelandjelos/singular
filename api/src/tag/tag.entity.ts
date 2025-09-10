@@ -8,21 +8,28 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   JoinColumn,
+  Index,
 } from 'typeorm';
 import { User } from '../user/user.entity';
 
 @Entity('tag')
 @Unique(['userId', 'name'])
+@Index('idx_tag_user_deleted', ['userId', 'deletedAt'])
 export class Tag {
   @PrimaryGeneratedColumn('uuid') id: string;
 
-  @Column() userId: string;
+  @Column({ name: 'user_id', type: 'uuid' })
+  userId: string;
+
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' }) // IMPORTANT
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column() name: string;
-  @Column({ nullable: true }) color?: string;
+  @Column({ type: 'varchar', length: 80 })
+  name: string;
+
+  @Column({ type: 'varchar', length: 32, nullable: true })
+  color?: string | null;
 
   @CreateDateColumn() createdAt: Date;
   @UpdateDateColumn() updatedAt: Date;

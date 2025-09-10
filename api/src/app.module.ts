@@ -4,8 +4,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { HealthModule } from './health/health.module';
 import { ProjectModule } from './project/project.module';
-// import { TagModule } from './tag/tag.module';
-// import { NoteModule } from './note/note.module';
+import { NoteModule } from './note/note.module';
+import { TagModule } from './tag/tag.module';
 import { DbBootstrapService } from './db/db-bootstrap.service';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { AuthModule } from './auth/auth.module';
@@ -29,8 +29,8 @@ import { AuthModule } from './auth/auth.module';
     HealthModule,
     UserModule,
     ProjectModule,
-    // TagModule,
-    // NoteModule,
+    NoteModule,
+    TagModule,
   ],
   controllers: [],
   providers: [DbBootstrapService],

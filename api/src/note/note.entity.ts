@@ -5,8 +5,8 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
-  JoinTable,
   ManyToMany,
+  JoinTable,
   DeleteDateColumn,
   Index,
   JoinColumn,
@@ -16,22 +16,34 @@ import { Project } from '../project/project.entity';
 import { Tag } from '../tag/tag.entity';
 
 @Entity('note')
-@Index('idx_note_user_date', ['userId', 'workDate'])
+@Index('idx_note_user_deleted', ['userId', 'deletedAt'])
+@Index('idx_note_project', ['projectId'])
 export class Note {
-  @PrimaryGeneratedColumn('uuid') id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column() userId: string;
+  @Column({ name: 'user_id' })
+  userId: string;
+
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' }) // IMPORTANT
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ nullable: true }) projectId?: string;
+  @Column({ name: 'project_id', nullable: true })
+  projectId?: string | null;
+
   @ManyToOne(() => Project, { nullable: true, onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'projectId' }) // IMPORTANT
+  @JoinColumn({ name: 'project_id' })
   project?: Project | null;
 
-  @Column({ type: 'date' }) workDate: string;
-  @Column({ type: 'text' }) content: string;
+  @Column({ type: 'varchar', length: 200 })
+  title: string;
+
+  @Column({ type: 'date', name: 'work_date', nullable: true })
+  workDate?: string | null;
+
+  @Column({ type: 'text', default: '' })
+  content: string;
 
   @ManyToMany(() => Tag, { cascade: false })
   @JoinTable({

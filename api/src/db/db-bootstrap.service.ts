@@ -22,7 +22,6 @@ export class DbBootstrapService implements OnModuleInit {
         ON app_user USING GIN (last_name gin_trgm_ops);
     `);
 
-    // Project FTS
     await this.ds.query(`
       CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_project_name_trgm
         ON project USING GIN (name gin_trgm_ops);
@@ -30,6 +29,24 @@ export class DbBootstrapService implements OnModuleInit {
     await this.ds.query(`
       CREATE INDEX CONCURRENTLY IF NOT EXISTS idx_project_desc_trgm
         ON project USING GIN (description gin_trgm_ops);
+    `);
+
+    await this.ds.query(`
+    CREATE INDEX IF NOT EXISTS idx_note_title_trgm
+      ON note USING GIN (title gin_trgm_ops);
+    `);
+    await this.ds.query(`
+    CREATE INDEX IF NOT EXISTS idx_note_content_trgm
+      ON note USING GIN (content gin_trgm_ops);
+    `);
+    await this.ds.query(`
+    CREATE INDEX IF NOT EXISTS idx_tag_name_trgm
+      ON tag USING GIN (name gin_trgm_ops);
+    `);
+
+    await this.ds.query(`
+    CREATE INDEX IF NOT EXISTS idx_note_user_deleted_updated
+      ON note (user_id, deleted_at, updated_at DESC);
     `);
   }
 }
