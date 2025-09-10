@@ -16,7 +16,7 @@ export interface ProjectState extends EntityState<Project> {
 
 export const adapter = createEntityAdapter<Project>({
   selectId: (p) => p.id,
-  sortComparer: false, // backend already sorts (pinned desc, updated desc)
+  sortComparer: false, // backend alerady sorts (pinned desc, updated desc)
 });
 
 export const initialState: ProjectState = adapter.getInitialState({

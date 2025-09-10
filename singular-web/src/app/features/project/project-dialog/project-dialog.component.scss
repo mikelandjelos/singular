@@ -1,0 +1,68 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 8px 12px;
+}
+.w {
+  width: 100%;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+.mat-form-field-wrapper {
+  position: relative;
+  padding-bottom: 1.25em;
+  margin-bottom: 8px;
+}
+
+.mat-form-field-flex {
+  display: flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  padding: 12px;
+  min-height: 56px;
+}
+
+.mat-form-field-label {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  background: white;
+  padding: 0 4px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.mat-form-field-infix {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.color-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.color-input:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.color-value {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 16px;
+}
