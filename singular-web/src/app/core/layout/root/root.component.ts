@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.state';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { selectRouteParam } from '../../state';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs';
@@ -21,6 +21,7 @@ import { AuthActions } from '../../../features/auth/state';
   styleUrl: './root.component.scss',
   imports: [
     CommonModule,
+    RouterLinkActive,
     RouterOutlet,
     MatToolbarModule,
     MatButtonModule,
