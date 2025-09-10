@@ -24,6 +24,14 @@
           <mat-icon matListItemIcon>person</mat-icon>
           <span matListItemTitle>Profile</span>
         </a>
+        <a
+          mat-list-item
+          [routerLink]="['/', userId, 'projects']"
+          (click)="isSmallScreen() ? closeDrawer() : null"
+        >
+          <mat-icon matListItemIcon>folder</mat-icon>
+          <span matListItemTitle>Projects</span>
+        </a>
       </mat-nav-list>
     }
   </mat-sidenav>

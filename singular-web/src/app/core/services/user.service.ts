@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { User, UpdateUserDto } from '../types';
 
 @Injectable({ providedIn: 'root' })
-export class UserApi {
+export class UserService {
   private http = inject(HttpClient);
   private base = `${environment.apiUrl}/users`;
 

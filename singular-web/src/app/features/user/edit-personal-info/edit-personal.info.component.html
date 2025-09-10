@@ -6,10 +6,10 @@
         <mat-card-subtitle>Update your profile details</mat-card-subtitle>
       </mat-card-header>
 
-      <mat-card-content>
+      <mat-card-content class="card-content">
         <form [formGroup]="form" class="grid">
           <!-- Column 1 -->
-          <div>
+          <div class="column">
             <h3 class="section">Basics</h3>
 
             <mat-form-field appearance="outline" class="w-100">
@@ -54,7 +54,7 @@
           </div>
 
           <!-- Column 2 -->
-          <div>
+          <div class="column">
             <h3 class="section">Skills</h3>
             <mat-form-field class="chips-field" appearance="outline">
               <mat-chip-grid #skillsChipGrid formControlName="skills">
@@ -126,7 +126,6 @@
             </div>
           </div>
 
-          <!-- Move this section inside the form -->
           <div class="summary-section" style="grid-column: 1 / -1">
             <mat-divider class="my-3"></mat-divider>
 

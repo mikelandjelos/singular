@@ -1,0 +1,61 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.spacer {
+  flex: 1;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.filters .search {
+  flex: 1;
+  min-width: 420px;
+  max-width: 760px;
+}
+
+.table-wrap {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+table {
+  width: 100%;
+}
+
+.pin-btn.is-pinned mat-icon {
+  transform: rotate(-35deg);
+  transition: transform 0.12s ease;
+}
+.pin-btn mat-icon {
+  opacity: 0.65;
+}
+.pin-btn.is-pinned mat-icon {
+  opacity: 1;
+}
+
+.name-block {
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  font-weight: 600;
+  line-height: 1.25;
+}
+.desc {
+  color: rgba(0, 0, 0, 0.64);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 64ch;
+}
+
+.row-pinned {
+  outline: 1px solid rgba(0, 0, 0, 0.08);
+}
