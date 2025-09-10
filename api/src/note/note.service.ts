@@ -91,29 +91,17 @@ export class NoteService {
     return { ok: true, note: saved };
   }
 
-  async listOffset(
-    userId: string,
-    p: ListNotesParams,
-  ): Promise<{
-    items: Note[];
-    meta: {
-      offset: number;
-      limit: number;
-      total: number;
-      hasNext: boolean;
-      hasPrev: boolean;
-    };
-  }> {
+  async listOffset(userId: string, p: ListNotesParams) {
     const offset = p.offset ?? 0;
     const limit = p.limit ?? 20;
-    const archived = !!p.archived;
+    const includeArchived = !!p.archived;
 
     const base = this.noteRepo
       .createQueryBuilder('n')
       .where('n.user_id = :userId', { userId });
 
-    if (archived) {
-      base.withDeleted().andWhere('n.deleted_at IS NOT NULL');
+    if (includeArchived) {
+      base.withDeleted();
     } else {
       base.andWhere('n.deleted_at IS NULL');
     }
@@ -151,17 +139,17 @@ export class NoteService {
       base.orderBy('n.updated_at', 'DESC');
     }
 
-    const idQb = base
-      .clone()
-      .select('n.id', 'id')
-      .distinct(true)
-      .offset(offset)
-      .limit(limit);
-    const countQb = base.clone().select('n.id').distinct(true);
+    // page ids
+    const ids = (
+      await base
+        .clone()
+        .select('n.id', 'id')
+        .offset(offset)
+        .limit(limit)
+        .getRawMany<{ id: string }>()
+    ).map((r) => r.id);
 
-    const idsRows = await idQb.getRawMany<{ id: string }>();
-    const ids = idsRows.map((r) => r.id);
-    const total = await countQb.getCount();
+    const total = await base.clone().getCount();
 
     if (!ids.length) {
       return {

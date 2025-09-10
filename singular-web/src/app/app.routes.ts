@@ -25,11 +25,22 @@ export const routes: Routes = [
     loadComponent: () => import('./core/layout/root/root.component').then((m) => m.RootComponent),
     canActivate: [authGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'projects' },
+      { path: '', pathMatch: 'full', redirectTo: 'profile' },
       {
-        path: 'home',
+        path: 'notes',
         loadComponent: () =>
-          import('./features/user/home/home.compontent').then((m) => m.HomeComponent),
+          import('./features/note/home/notes-home.component').then((m) => m.NotesHomeComponent),
+      },
+      {
+        path: 'notes/:id/edit',
+        loadComponent: () =>
+          import('./features/note/edit/note-edit.component').then((m) => m.NoteEditComponent),
+        canDeactivate: [
+          () =>
+            import('./features/note/guards/pending-changes.guard').then(
+              (m) => m.PendingChangesGuard,
+            ),
+        ],
       },
       {
         path: 'profile',
