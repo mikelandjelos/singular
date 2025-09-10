@@ -1,3 +1,4 @@
+import { projectReducer } from './features/project/state/project.reducer';
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -16,19 +17,21 @@ import { httpCredentialsInterceptor } from './core/interceptors/';
 import { AuthEffects, authReducer } from './features/auth/state';
 import { provideMarkdown } from 'ngx-markdown';
 import { UserEffects, userReducer } from './features/user/state';
+import { ProjectEffects } from './features/project/state/project.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(
-      routes,
-      // TODO: this has a potential to be buggy
-      withRouterConfig({ paramsInheritanceStrategy: 'always' }),
-    ),
+    provideRouter(routes, withRouterConfig({ paramsInheritanceStrategy: 'always' })),
     provideHttpClient(withInterceptors([httpCredentialsInterceptor])),
-    provideStore({ auth: authReducer, user: userReducer, router: routerReducer }),
-    provideEffects([AuthEffects, UserEffects]),
+    provideStore({
+      auth: authReducer,
+      user: userReducer,
+      project: projectReducer,
+      router: routerReducer,
+    }),
+    provideEffects([AuthEffects, UserEffects, ProjectEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideRouterStore(),
     provideMarkdown(),

@@ -25,7 +25,7 @@ export const routes: Routes = [
     loadComponent: () => import('./core/layout/root/root.component').then((m) => m.RootComponent),
     canActivate: [authGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'profile' },
+      { path: '', pathMatch: 'full', redirectTo: 'projects' },
       {
         path: 'home',
         loadComponent: () =>
@@ -41,6 +41,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/user/edit-personal-info/edit-personal-info.component').then(
             (m) => m.EditPersonalInfoComponent,
+          ),
+      },
+      {
+        path: 'projects',
+        loadComponent: () =>
+          import('./features/project/projects-page/projects-page.component').then(
+            (m) => m.ProjectsPageComponent,
           ),
       },
     ],

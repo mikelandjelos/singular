@@ -1,21 +1,21 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { UserActions } from './user.actions';
-import { UserApi, ToastService } from '../../../core/services';
+import { UserService, ToastService } from '../../../core/services';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { AuthActions } from '../../auth/state';
 
 @Injectable({ providedIn: 'root' })
 export class UserEffects {
   private readonly actions$ = inject(Actions);
-  private readonly userApi = inject(UserApi);
+  private readonly userService = inject(UserService);
   private readonly toast = inject(ToastService);
 
   update$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.update),
       mergeMap(({ id, changes }) =>
-        this.userApi.update(id, changes).pipe(
+        this.userService.update(id, changes).pipe(
           map((user) => UserActions.updateSuccess({ user })),
           catchError((err) =>
             of(UserActions.updateFailure({ error: err?.error?.message ?? 'Update failed' })),
@@ -45,7 +45,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.softDelete),
       mergeMap(({ id }) =>
-        this.userApi.softDelete(id).pipe(
+        this.userService.softDelete(id).pipe(
           map(() => UserActions.softDeleteSuccess()),
           catchError((err) =>
             of(UserActions.softDeleteFailure({ error: err?.error?.message ?? 'Archive failed' })),
@@ -75,7 +75,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.restore),
       mergeMap(({ id }) =>
-        this.userApi.restore(id).pipe(
+        this.userService.restore(id).pipe(
           map(() => UserActions.restoreSuccess()),
           catchError((err) =>
             of(UserActions.restoreFailure({ error: err?.error?.message ?? 'Restore failed' })),
@@ -105,7 +105,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(UserActions.hardDelete),
       mergeMap(({ id }) =>
-        this.userApi.hardDelete(id).pipe(
+        this.userService.hardDelete(id).pipe(
           map(() => UserActions.hardDeleteSuccess()),
           catchError((err) =>
             of(
